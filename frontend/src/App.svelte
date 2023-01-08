@@ -16,10 +16,9 @@
 
   There is a programmer of legend
 
-  \`\`\`rust
-  pub fn test() {
-    let var = "Hello";
-    println!("{} World!");
+  \`\`\`js
+  function test() {
+    console.log("HEllo World!")
   }
   \`\`\`
   `
