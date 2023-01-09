@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 salvo = { version = "*", features = ["serve-static"] }
 tokio = { version = "1", features = ["macros"] }
+git2 = "0.15.0"
+serde = "1.0.152"

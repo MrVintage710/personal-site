@@ -1,5 +1,8 @@
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+
+const root = resolve(__dirname, 'src')
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,6 +11,13 @@ export default defineConfig({
     host: true
   },
   build: {
-    outDir: "../backend/dist"
+    outDir: "../backend/dist",
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: resolve(root, 'routes', 'home', "index.html"),
+        blog: resolve(root, 'routes', 'blog', "index.html")
+      }
+    }
   }
 })
