@@ -80,7 +80,7 @@
       </svg>
     </div>
     <div class="main-section panel-4" class:selected = "{current_page === 4}" on:click={() => {onTabClick(4)}} on:keydown>
-      <p class="courier">Resume</p> 
+      <p class="courier">Contact</p> 
       <svg class="tech-lines panel-lines" width="100%" height="100%" >
         <g>
           <line class="decoration-4" x1="0" y1="0" x2="0" y2="100vh"/>

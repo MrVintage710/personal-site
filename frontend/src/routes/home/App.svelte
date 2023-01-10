@@ -61,18 +61,6 @@
 </div>
 
 <style>
-  .app-wrapper {
-    overflow-x: hidden;
-    max-width: 100vw;
-    position: relative;
-  }
-
-  .content-wrapper  {
-    max-width: 1225px;
-    padding: 0px 10px 0px 10px;
-    transform: translate(calc(50vw - 50%));
-  }
-
   .gridlayout {
     display: grid;
     grid-template-columns:1fr 1fr;

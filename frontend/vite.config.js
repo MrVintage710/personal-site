@@ -1,8 +1,9 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { watch } from 'fs'
 
-const root = resolve(__dirname, 'src')
+const root = resolve(__dirname, 'src/routes')
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,9 +16,10 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(root, 'routes', 'home', "index.html"),
-        blog: resolve(root, 'routes', 'blog', "index.html")
+        main: resolve(root, 'home', "index.html"),
+        blog: resolve(root, 'blog', "index.html")
       }
-    }
+    },
+    watch : {}
   }
 })

@@ -3,20 +3,23 @@ use std::{path};
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
-pub struct BlogRef {
-    id : usize,
-}
-
-#[derive(Deserialize, Serialize)]
 pub struct BlogMeta {
-    tags : Vec<String>
+    tags : Vec<String>,
+    desc : String,
+    title : String,
+    pic : String
 }
 
 #[derive(Deserialize, Serialize)]
 pub struct Blog {
     id : usize,
     meta : BlogMeta,
-    content : String
+    content : String,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct BlogRef {
+    id : usize,
 }
 
 impl BlogRef {
@@ -27,7 +30,18 @@ impl BlogRef {
         }
     }
 
-    pub fn load_blog() -> Blog {}
+    pub fn load_blog(&self) -> Option<Blog> {
+        let content = self.load_md();
+        let meta = self.load_meta();
+
+        if content.is_some() && meta.is_some() {
+            let content = content.unwrap();
+            let meta = meta.unwrap();
+            return Some(Blog { id: self.id, meta: meta, content: content })
+        }
+
+        None
+    }
 
     pub fn load_meta(&self) -> Option<BlogMeta> {
         if let Some(mut path) = self.get_path() {
@@ -70,5 +84,40 @@ impl BlogRef {
 
         None
     }
+
+    pub fn exists(&self) -> bool {
+        match self.get_path() {
+            Some(_) => true,
+            None => false,
+        }
+    }
 }
 
+#[derive(Deserialize, Serialize)]
+pub struct BlogBatch {
+    offset: usize,
+    count: usize,
+}
+
+impl BlogBatch {
+    pub fn load_meta(&self) -> Vec<BlogMeta> {
+        let mut metas = Vec::new();
+
+        for i in self.offset..(self.count + self.offset) {
+            let blog_ref = BlogRef::new(i);
+            if let Some(meta) = blog_ref.load_meta() {
+                metas.push(meta)
+            }
+        }
+
+        metas
+    }
+}
+
+pub fn is_blog(id : usize) -> bool {
+    let blog_ref = BlogRef::new(id);
+    match blog_ref.get_path() {
+        Some(_) => true,
+        None => false,
+    }
+}
