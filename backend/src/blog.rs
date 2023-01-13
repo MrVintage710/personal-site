@@ -7,7 +7,10 @@ pub struct BlogMeta {
     tags : Vec<String>,
     desc : String,
     title : String,
-    pic : String
+    pic : String,
+    path : String,
+    author : String,
+    show_title : bool
 }
 
 #[derive(Deserialize, Serialize)]
@@ -25,7 +28,7 @@ pub struct BlogRef {
 impl BlogRef {
 
     pub fn new(id : usize) -> BlogRef {
-        BlogRef{
+        BlogRef {
             id
         }
     }

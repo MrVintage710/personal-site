@@ -8,9 +8,13 @@
     export let style = "";
     export let title = "";
     export let link = "";
+
+    function handleClick() {
+        window.open(link, "_self")
+    }
 </script>
 
-<div class="container" style=" --card-width : {width}; --card-height : {height}; --cursor: {link != "" ? "pointer" : "default"}; {style}">
+<div class="container" style=" --card-width : {width}; --card-height : {height}; --cursor: {link != "" ? "pointer" : "default"}; {style}" on:click={handleClick} on:keydown>
     <div class="card" style="--color: {"var(--color-" + color + ")" };">
         <div class="front">
             <div class="image" style="--image-url : {"url(" + image_url +")"};">
@@ -20,7 +24,7 @@
             </div>
         </div>
         <div class="back">
-            <p>Test</p>
+            
         </div>
     </div>
 </div>

@@ -332,7 +332,7 @@
   
   .main-section p {
     position: absolute;
-    transform: translate(calc(50px - 100%), 92vh) rotateZ(90deg);
+    transform: translate(calc(50px - 100%), calc(100vh - 100% - 50px)) rotateZ(90deg);
     transform-origin: right;
     text-align: right;
     font-weight: 500;

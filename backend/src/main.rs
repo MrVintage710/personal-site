@@ -7,7 +7,7 @@ use salvo::serve_static::StaticDir;
 use std::time::Duration;
 use tokio::{task, time};
 
-const refresh_time : u64 = 10*60;
+const refresh_time : u64 = 30; //In Seconds
 
 #[handler]
 async fn main_page(res : &mut Response) {
@@ -70,7 +70,7 @@ async fn main() {
         Router::with_path("assets")
         .push(Router::with_path("<**path>")
             .get(
-                StaticDir::new(["dist/assets", "content/blogs/initial_blog"]).with_defaults("index.html").with_listing(true)
+                StaticDir::new(["dist/assets", "content"]).with_defaults("index.html").with_listing(true)
             )
         )
     )

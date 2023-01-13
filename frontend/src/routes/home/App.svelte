@@ -1,4 +1,5 @@
 <script>
+  import {onMount} from 'svelte'
   import SvelteMarkdown from 'svelte-markdown'
   import CodeRenderer from '../../renderers/Code.svelte';
   import TheBanner from '../../lib/TheBanner.svelte';
@@ -23,6 +24,13 @@
   \`\`\`
   `
 
+  let blogs = [];
+
+  onMount(async () => {
+    let res = await fetch('/blog/batch?offset=' + 0 + "&count=" + 4);
+    let data = await res.json();
+    blogs = data;
+  })
 </script>
 
 <div class="app-wrapper">
@@ -32,30 +40,15 @@
     <SvelteMarkdown renderers={{code : CodeRenderer}} {source}></SvelteMarkdown>
     <h2>Blogs</h2>
     <div class="gridlayout">
+      {#each blogs as blog, index}
         <FlipCard 
         color={1} 
-        image_url={"https://static01.nyt.com/images/2022/04/04/multimedia/15ai-nocode/15ai-nocode-superJumbo.gif?quality=75&auto=webp"}
-        title={"Programing a Game Engine in Rust From Scratch - A Cautionary Tale"},
+        image_url={blog.path + '/' + blog.pic}
+        title={blog.title}
         height="400px"
+        link={"/blog?id=" + index}
         />
-        <FlipCard 
-        color={2} 
-        image_url={"https://static01.nyt.com/images/2022/04/04/multimedia/15ai-nocode/15ai-nocode-superJumbo.gif?quality=75&auto=webp"}
-        title={"Programing a Game Engine in Rust From Scratch - A Cautionary Tale"},
-        height="400px"
-        />
-        <FlipCard 
-        color={3} 
-        image_url={"https://static01.nyt.com/images/2022/04/04/multimedia/15ai-nocode/15ai-nocode-superJumbo.gif?quality=75&auto=webp"}
-        title={"Programing a Game Engine in Rust From Scratch - A Cautionary Tale"},
-        height="400px"
-        />
-        <FlipCard 
-        color={4} 
-        image_url={"https://static01.nyt.com/images/2022/04/04/multimedia/15ai-nocode/15ai-nocode-superJumbo.gif?quality=75&auto=webp"}
-        title={"Programing a Game Engine in Rust From Scratch - A Cautionary Tale"},
-        height="400px"
-        />
+      {/each}
     </div>
   </div>
 </div>
