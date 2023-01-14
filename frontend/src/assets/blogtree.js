@@ -1,32 +1,77 @@
 import { element } from "svelte/internal";
 
-export default async (blog_content_id) => {
-    addEventListener("load", (event) => {
-        const content_wrapper = document.getElementById(blog_content_id);
-        const content = content_wrapper.querySelectorAll("h1, h2, h3, h4, h5, h6");
-        construct_tree(content.values())
-    })
+export default class LeveledTree {
+    constructor() {
+        this.nodes = [];
+    }
+
+    push(value, level) {
+        this.nodes.push({value, level})
+    }
+
+    get(index) {
+        return this.nodes[index]
+    }
+
+    contains(index) {
+        return index >=0 && index < this.nodes.length
+    }
+
+    get_parent(index) {
+        return this.get_prior_of_level(index, this.nodes[index].level - 1).node;
+    }
+
+    get_parent_info(index) {
+        if(this.contains(index)) {
+            return this.get_prior_of_level(index, this.nodes[index].level - 1);
+        } else {
+            return null;
+        }
+    }
+
+    get_parents(index) {
+        let parent = this.get_parent_info(index);
+        if(this.contains(index)) {
+            if(parent) {
+                let parents = this.get_parents(parent.index);
+                parents.push(this.nodes[index].value);
+                return parents
+            } else {
+                return [this.nodes[index].value];
+            }
+        }
+    }
+
+    get_last_from_pos(offset) {
+        for(let i = 0; i < this.nodes.length - 1; i++) {
+            let current_y = this.nodes[i].value.getBoundingClientRect().top;
+
+            if(current_y >= offset) {
+                return i - 1
+            }
+        }
+
+        return -1;
+    }
+
+    get_prior_of_level(index, level, first = true) {
+        if(index < 0) return null;
+        if(!first) {
+            let node = this.nodes[index]
+            if(node.level === level) {
+                return {node, index};
+            }
+        }
+
+        return this.get_prior_of_level(index - 1, level, first = false);
+    }
 }
 
-function construct_tree(iterator, current_node = {level : 0, children : []}) {
-    let root = current_node.root ? current_node.root : current_node;
-    let parent = current_node.parent ? current_node.parent : current_node
-
-    if(!iterator || !iterator.next || !current_node) {return root}
-    
-    let tag = iterator.next();
-    
-    if(!tag.done) {
-        let level = Number(tag.id.slice(1));
-    
-        if(level === tag.level + 1) {
-            let next = {level, children : [], root, parent : current_node, tag}
-            current_node.children.push(next)
-            return construct_tree(iterator, current_node = next)
-        } else if(level === tag.level - 1) {
-            let next = {level, children : [], root, parent : parent, tag}
-        }
+function check_level(levels, level) {
+    if(levels[level]) {
+        return levels[level].length - 1
     } else {
-        return root;
+        levels[level] = [];
+        return -1;
     }
 }

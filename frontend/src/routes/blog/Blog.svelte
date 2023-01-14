@@ -5,12 +5,15 @@
   import ImageRenderer from '../../renderers/Image.svelte';
   import HeadingRender from '../../renderers/Heading.svelte';
   import Header from '../../lib/Header.svelte';
-  import blogtree from '../../assets/blogtree';
+  import LeveledTree from '../../assets/blogtree';
   import {current_path} from "../../lib/current_path"
   import 'highlight.js/styles/base16/monokai.css';
 
   const urlParams = new URLSearchParams(window.location.search);
   const id = Number(urlParams.get('id'));
+  const blog_tree = new LeveledTree();
+  
+  let parents = []
 
   let blog = {
     content: "",
@@ -27,20 +30,35 @@
     let data = await res.json();
     blog = data
     current_path.set(blog.meta.path)
-
-    blogtree("blog-content")
-    
   })
+
+  addEventListener("load", (_) => {
+    const content_wrapper = document.getElementById("blog-content");
+    const content = content_wrapper.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    
+    content.forEach((element) => {
+        let level = Number(element.tagName.slice(1));
+        blog_tree.push(element, level);
+    })
+  })
+
+  window.onscroll = () => {
+    let scroll = window.scrollY;
+    let index = blog_tree.get_last_from_pos(85);
+
+    parents = blog_tree.get_parents(index);
+  }
 
   $: title = blog.meta.title;
   $: content = blog.content;
   $: path = blog.meta.path;
   $: pic = blog.meta.pic;
   $: author = blog.meta.author;
+  $: header_hint = parents ? parents : [];
 </script>
 
+<Header path={header_hint}></Header>
 <div class="app-wrapper">
-  <Header></Header>
   <div class="content-wrapper">
     <div class="header-wrapper">
       <div class="header-title">
