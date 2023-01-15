@@ -1,13 +1,15 @@
 mod blog;
 mod git;
+mod mtg;
 
 use blog::{BlogRef, BlogBatch};
+use mtg::{CardID, MTGCardManager, MTGCardHandler};
 use salvo::prelude::*;
 use salvo::serve_static::StaticDir;
-use std::time::Duration;
-use tokio::{task, time};
+use std::{time::Duration, sync::{Arc}};
+use tokio::{task, time, sync::{Mutex}};
 
-const refresh_time : u64 = 30; //In Seconds
+const refresh_time : u64 = 60 * 5; //In Seconds
 
 #[handler]
 async fn main_page(res : &mut Response) {
@@ -52,9 +54,22 @@ async fn blog_single(req : &mut Request, res : &mut Response) {
     }
 }
 
+#[handler]
+async fn card_query(req : &mut Request, res : &mut Response) {
+    if let Ok(cards) = req.parse_json::<Vec<CardID>>().await {
+        println!("{:?}", cards);
+        res.set_status_code(StatusCode::ACCEPTED);
+    } else {
+        res.set_status_code(StatusCode::BAD_REQUEST)
+    }
+}
+
+
 #[tokio::main]
 async fn main() {
 
+    let card_manager = Arc::new(Mutex::new(MTGCardManager::new()));
+    
     let update_task = task::spawn(async {
         let mut interval = time::interval(Duration::from_secs(refresh_time));
 
@@ -73,6 +88,10 @@ async fn main() {
                 StaticDir::new(["dist/assets", "content"]).with_defaults("index.html").with_listing(true)
             )
         )
+    )
+    .push(
+        Router::with_path("card_query")
+        .post(MTGCardHandler::new(Arc::clone(&card_manager)))
     )
     .push(
         Router::with_path("blog")

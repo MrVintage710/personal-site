@@ -3,7 +3,7 @@
   import SvelteMarkdown from 'svelte-markdown'
   import CodeRenderer from '../../renderers/Code.svelte';
   import TheBanner from '../../lib/TheBanner.svelte';
-  import HighlightCard from '../../lib/HighlightCard.svelte';
+  import HighlightCard from '../../lib/DisplayCard.svelte';
   import FlipCard from '../../lib/FlipCard.svelte';
   
   import 'highlight.js/styles/base16/monokai.css';
