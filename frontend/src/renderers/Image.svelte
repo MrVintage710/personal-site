@@ -33,7 +33,6 @@
     }
   })
 
-
   $: card_names = card_names
   $: cards = cards
 </script>
@@ -44,13 +43,16 @@
   </div>
   {:else if text === "card"}
   <div class="card-display">
-    <DisplayCard image_url={"/assets/" + path + "/" + href}></DisplayCard>
+    <DisplayCard front_image={"/assets/" + path + "/" + href}></DisplayCard>
   </div>
   {:else if text === "mtg"}
   <div class="card-flex">
     {#each card_names as name, i}
       <div class="card-display">
-        <DisplayCard image_url={cards[name] ? cards[name].front : "" }></DisplayCard>
+        <DisplayCard 
+        front_image={cards[name] ? cards[name].front : ""}
+        back_image={cards[name] ? cards[name].back ? cards[name].back : "" : ""}
+        ></DisplayCard>
       </div>
     {/each}
   </div>
