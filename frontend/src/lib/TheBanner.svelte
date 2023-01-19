@@ -90,7 +90,7 @@
     </div>
     <div class="main-section panel-5"></div>
     <div class="display-text-container">
-        <p class="{socket_text_current_class + " courier"}">Display Out</p>
+        <p class="{socket_text_current_class + " courier socket-text"}">Display Out</p>
     </div>
     <svg width="calc(100%)" height="100%" class="tech-lines connector-line">
         <g>
@@ -138,6 +138,7 @@
 
       /* Display Port */
       --display-port-offset: 0px;
+      --display-port-text: block;
 
       /* Panels */
       --panel-1-horizontal-pos: 10vw;
@@ -166,6 +167,7 @@
 
       /* Display Port */
       --display-port-offset: 0px;
+      --display-port-text: block;
 
       /* Panels */
       --panel-1-horizontal-pos: 10vw;
@@ -194,6 +196,7 @@
 
       /* Display Port */
       --display-port-offset: 0px;
+      --display-port-text: block;
 
       /* Panels */
       --panel-1-horizontal-pos: 10vw;
@@ -202,7 +205,7 @@
       --panel-4-horizontal-pos: 70vw;
       --panel-5-horizontal-pos: 90vw;
 
-      --panel-hover-distance: 0px;
+      --panel-hover-distance: 10px;
       --panel-extention-distance: 60px;
     }
   }
@@ -291,6 +294,7 @@
     font-size: 40pt;
     position: relative;
     z-index: 2;
+    margin: 5px;
   }
 
   /* Profile Picture */
@@ -434,6 +438,8 @@
 
   .display-text-container p {
     margin: 0;
+    font-size: 0.8em;
+    line-height: 20px;
     transition: 0.5s;
     background-color: var(--color-dark);
     display: var(--display-port-text);
