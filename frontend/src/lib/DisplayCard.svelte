@@ -6,30 +6,34 @@
     export let back_image = "";
 
     let card_element;
+    let card_front;
+    let card_back;
     let flipped = false;
     let tilt = {};
 
     onMount(() => {
-        // tilt = new VanillaTilt(card_element);
+        tilt = new VanillaTilt(card_front);
     })
 
     function flip() {
         if(flipped) {
-            console.log(tilt)
+            //Destroy Card Back
+            tilt = new VanillaTilt(card_front);
+            flipped = false;
         } else {
-
+            tilt.destroy();
+            flipped = true;
         }
-        flipped = !flipped
     }
 </script>
 
 {#if back_image !== ""}
-    <div role="button" class="flip-button" on:click={flip} on:keyup><i class="fa-solid fa-rotate"></i></div>
+<div role="button" class="flip-button" on:click={flip} on:keyup><i class="fa-solid fa-rotate"></i></div>
 {/if}
 
 <div class="card" bind:this={card_element} data-tilt data-tilt-scale="1.1" style="{"--rotation : " + (flipped ? "180deg" : "0deg")}">
-    <div class="image image-front" style="--image-url : {"url(" + front_image +")"};"></div>
-    <div class="image image-back" style="--image-url : {"url(" + back_image +")"};"></div>
+    <div bind:this={card_front} class="image image-front" style="--image-url : {"url(" + front_image +")"};"></div>
+    <div bind:this={card_back} class="image image-back" style="--image-url : {"url(" + back_image +")"};"></div>
 </div>
 
 <style>
