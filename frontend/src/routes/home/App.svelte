@@ -40,7 +40,7 @@
     <SvelteMarkdown renderers={{code : CodeRenderer}} {source}></SvelteMarkdown>
     <h2>Blogs</h2>
     <div class="gridlayout">
-      {#each blogs as blog, index}
+      {#each blogs.reverse() as blog, index}
         <FlipCard 
         color={1} 
         image_url={blog.path + '/' + blog.pic}
