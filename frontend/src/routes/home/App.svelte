@@ -37,7 +37,6 @@
   <TheBanner current_page={selected} on:tab-clicked={(event) => {selected = event.detail.value}}></TheBanner>
   <div class="content-wrapper">
     
-    <SvelteMarkdown renderers={{code : CodeRenderer}} {source}></SvelteMarkdown>
     <h2>Blogs</h2>
     <div class="gridlayout">
       {#each blogs.reverse() as blog, index}
@@ -47,9 +46,14 @@
         title={blog.title}
         height="400px"
         link={"/blog?id=" + index}
+        show_title={blog.show_title}
+        author={blog.author}
+        desc={blog.desc}
         />
       {/each}
     </div>
+
+    <SvelteMarkdown renderers={{code : CodeRenderer}} {source}></SvelteMarkdown>
   </div>
 </div>
 

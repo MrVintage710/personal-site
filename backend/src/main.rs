@@ -9,7 +9,7 @@ use salvo::serve_static::StaticDir;
 use std::{time::Duration, sync::{Arc}};
 use tokio::{task, time, sync::{Mutex}};
 
-const refresh_time : u64 = 5 * 60; //In Seconds
+const refresh_time : u64 = 10; //In Seconds
 
 #[handler]
 async fn main_page(res : &mut Response) {
